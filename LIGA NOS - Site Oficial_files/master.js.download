@@ -1,0 +1,115 @@
+$('#logo').click(function () {
+    /*area('home');*/
+});
+$('#porjornadas').click(function () {
+
+    $('#jogos').load('areas/' + $('#jogos').data('area') + '/ajax/jornadas.php');
+
+    $('.option').removeClass('active');
+    $(this).addClass('active');
+
+    $('.option').removeClass('masterBackgroundColor');
+    $(this).addClass('masterBackgroundColor');
+});
+$('#porequipas').click(function () {
+    $('#jogos').load('areas/' + $('#jogos').data('area') + '/ajax/jogos.php');
+
+    $('.option').removeClass('active');
+    $(this).addClass('active');
+
+    $('.option').removeClass('masterBackgroundColor');
+    $(this).addClass('masterBackgroundColor');
+});
+
+$(document).ready(function () {
+    /*
+     $('#banners').slick({
+     autoplay: true,
+     arrows: false,
+     fade: true,
+     });
+     $('#banners2').slick({
+     autoplay: true,
+     arrows: false,
+     fade: true,
+     });
+     */
+
+
+    var state = 'big';
+    $(window).scroll(function () {
+        if ($(document).scrollTop() > 100 && state == 'big') {
+            state = 'small';
+            $('#top').addClass('sticky');
+            $('header').addClass('sticky');
+        }
+        if ($(document).scrollTop() < 100 && state == 'small') {
+            state = 'big';
+            $('#top').removeClass('sticky');
+            $('header').removeClass('sticky');
+
+
+        }
+    });
+
+    $('#jogos').load('areas/' + $('#jogos').data('area') + '/ajax/jornadas.php');
+
+
+    $(".various").fancybox({
+        fitToView: false,
+        width: '95%',
+        height: '95%',
+        autoSize: false,
+        closeClick: false,
+        openEffect: 'none',
+        closeEffect: 'none',
+        padding: 1
+    });
+
+});
+
+function getJornada(id) {
+    $.post("areas/" + $('#jogos').data('area') + "/ajax/jornada.php", {jornada: id})
+        .done(function (data) {
+            $('#jornada').html(data);
+            $('.subtitle .num').html(id);
+        });
+}
+function getEquipa(id, nome) {
+    $.post("areas/" + $('#jogos').data('area') + "/ajax/equipa.php", {equipa: id})
+        .done(function (data) {
+            $('#jornada').html(data);
+            $('.subtitle').html('<img src="images/teams/' + id + '.png"/> ' + nome);
+        });
+}
+$(function () {
+    $('a[href*=#]:not([href=#])').click(function () {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+            var target = $(this.hash);
+            target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+            if (target.length) {
+                $('html,body').animate({
+                    scrollTop: target.offset().top - 120
+                }, 1000);
+                return false;
+            }
+        }
+    });
+});
+
+function area(area) {
+    var location = area == 'home' ? '' : area + '/';
+    window.location.href = location;
+}
+
+jQuery(window).resize(function () {
+
+    var widthRatio = $(document).width();
+    var widthsize = document.documentElement.scrollWidth;
+    var slideposition = document.getElementById('slideposition');
+    if (typeof slideposition !== 'undefined' && slideposition != null) {
+        var offsetHeight = slideposition.offsetHeight;
+        $('#player').css({width: widthRatio});
+    }
+
+});
